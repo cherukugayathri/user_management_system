@@ -2,6 +2,20 @@ const express=require("express");
 const router=express.Router();
 const Employee=require("../models/Employee");
 
+
+router.post("/", async (req, res) => {
+    const {username, department, salary} = req.body;
+
+    try {
+        const newEmployee = new Employee({username, department, salary});
+
+        const savedEmployee = await newEmployee.save();
+        res.status(201).json(savedEmployee); // 201 - Created
+    } catch (err) {
+        console.error("POST Error:", err.message);
+        res.status(500).json({ message: "Server Error" }); // 500 - Internal server error
+    }
+});
 // GET /employees-get all registered employees
 router.get("/",async(req,res) => {
     try {
