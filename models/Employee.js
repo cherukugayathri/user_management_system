@@ -1,9 +1,9 @@
 const mongoose=require("mongoose");
 const employeeSchema = new mongoose.Schema({
     id:{
-        type:String,
+        type:String,// id = username
         required:true,
-        unique:true, // to avoid duplicates // id = username
+        unique:true, // to avoid duplicates
     },
     email:{
         type:String,
@@ -28,12 +28,13 @@ const employeeSchema = new mongoose.Schema({
     } ,
     department:{
         type:String,
-        required:true,
+        required:false,
         trim:true
     },
     salary:{
         type:Number,
-        required:true,
+        required:false,
     },
-});
+    }, { timestamps: true }); // adds createdAt and updatedAt
+
 module.exports=mongoose.model("Employee", employeeSchema); // converting schema into model to interact with mongodb

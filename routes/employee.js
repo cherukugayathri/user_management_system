@@ -1,14 +1,26 @@
 const express=require("express");
+const bcrypt = require("bcryptjs");
 const router=express.Router();
 const Employee=require("../models/Employee");
 
-
+// POST /employees - create a new employee (with dept & salary)
 router.post("/", async (req, res) => {
-    const {username, department, salary} = req.body;
+    const { id, email, password, firstName, lastName, department, salary} = req.body;
 
     try {
-        const newEmployee = new Employee({username, department, salary});
+        // checking whether employee already exists
+        const existingEmployee = await Employee.findOne({ email });
+        if(existingEmployee) {
+            return res.status(400).json({ message: "Employee already exixts" });
+        }
 
+        // hashing password before saving
+        const hashedPassword = await bcrypt.hash(password,10);
+
+        // creating new employee
+        const newEmployee = new Employee({ id, email, password:hashedPassword, firstName, lastName, department, salary});
+
+        //saving employee in db
         const savedEmployee = await newEmployee.save();
         res.status(201).json(savedEmployee); // 201 - Created
     } catch (err) {
@@ -29,12 +41,12 @@ router.get("/",async(req,res) => {
 
 //PUT /employees/:id - updating an employee
 router.put("/:id",async(req,res) => {
-    const {username, department, salary} =req.body;
+    const {department, salary, firstName, lastName} =req.body;
 
     try {
         const updatedEmployee = await Employee.findByIdAndUpdate(
             req.params.id, // gets employeeID from URL
-            {username, department, salary},
+            {department, salary, firstName, lastName},
             {new:true} // returns updated document
         );
         if (!updatedEmployee) {
