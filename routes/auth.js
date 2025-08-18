@@ -1,14 +1,14 @@
 const express=require("express");
 const bcrypt=require("bcryptjs"); // password hashing
 const router=express.Router();
-const User=require("../models/User");
+const Employee=require("../models/Employee");
 
 // POST /register
 router.post("/register", async (req, res) => {
   const { id, email, password, firstName, lastName } = req.body;
 
   try {
-    const existingUser = await User.findOne({ email });// checking whether user already exists
+    const existingUser = await Employee.findOne({ email });// checking whether user already exists
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" }); // 400 bad request status code
     }
@@ -16,10 +16,10 @@ router.post("/register", async (req, res) => {
     // password hashing
     const hashedPassword = await bcrypt.hash(password,10); // salting technique and 10 = salt rounds
 
-    // creating new user with hashed password
-    const newUser = new User({ id, email, password:hashedPassword, firstName, lastName}); // stored the hashed password
+    // creating new employee with hashed password
+    const newEmployee = new Employee({ id, email, password:hashedPassword, firstName, lastName}); // stored the hashed password
 
-    await newUser.save();
+    await newEmployee.save();
     res.status(201).json({ message: "User registered successfully" }); // 201 created status code
   } catch (err) {
     console.error("Registration error:", err.message);
@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
 
   try{
     //checking whether user exists or not by id
-    const user = await User.findOne({ id });
+    const user = await Employee.findOne({ id });
     if (!user ) {
       return res.status(401).json({ message: "Invalid id or password"}); // 401 unauthorized status code
     }
