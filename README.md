@@ -50,11 +50,13 @@ POST /api/auth/register
 **Body (JSON):**
 ```json
 {
-  "id":"gayathri789",
-  "email":"gayathrich@gmail.com",
-  "password":"password@789",
-  "firstName":"Gayathri",
-  "lastName":"Ch"
+  "id": "emp001",
+  "email": "ram001@gmail.com",
+  "password": "Ram@0123",
+  "firstName": "Ram",
+  "lastName": "Kumar",
+  "department": "IT",
+  "salary": 60000
 }
 ```
 
@@ -88,10 +90,12 @@ PUT /api/employees/:employeeId
 **Body (JSON):**
 ```json
 {
-  "username": "Ram Kumar",
-  "department": "IT Security",
-  "salary": 75000
+  "department": "Cybersecurity",
+  "salary": 70000,
+  "firstName": "Ram",
+  "lastName": "K"
 }
+
 ```
 
 ---
@@ -121,7 +125,6 @@ DELETE /api/employees/:employeeId
 - **config/**
   - **db.js** - Connects to MongoDB using Mongoose
 - **models/**
-  - **User.js** - Mongoose schema for registered users
   - **Employee.js** - Mongoose schema for employee records
 - **routes/**
   - **auth.js** - Routes for user registration and login
