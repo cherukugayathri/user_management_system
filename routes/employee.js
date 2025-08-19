@@ -11,14 +11,11 @@ router.post("/", async (req, res) => {
         // checking whether employee already exists
         const existingEmployee = await Employee.findOne({ email });
         if(existingEmployee) {
-            return res.status(400).json({ message: "Employee already exixts" });
+            return res.status(400).json({ message: "Employee already exists" });
         }
 
         // hashing password before saving
         const hashedPassword = await bcrypt.hash(password,10);
-
-        // creating new employee
-        const newEmployee = new Employee({ id, email, password:hashedPassword, firstName, lastName, department, salary});
 
         //saving employee in db
         const savedEmployee = await newEmployee.save();

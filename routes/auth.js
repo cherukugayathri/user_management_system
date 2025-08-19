@@ -29,13 +29,13 @@ router.post("/register", async (req, res) => {
 
 // POST/login
 router.post("/login", async (req, res) => {
-  const { id, password } = req.body; // id is used as username for login purpose
+  const { email, password } = req.body; // id is used as username for login purpose
 
   try{
     //checking whether user exists or not by id
-    const user = await Employee.findOne({ id });
+    const user = await Employee.findOne({ email });
     if (!user ) {
-      return res.status(401).json({ message: "Invalid id or password"}); // 401 unauthorized status code
+      return res.status(401).json({ message: "Invalid email or password"}); // 401 unauthorized status code
     }
 
     // comparing the hashed passwords
@@ -44,7 +44,7 @@ router.post("/login", async (req, res) => {
       return res.status(200).json({ message: "Login successful"}); // 200 OK status code
     }
     else {
-      return res.status(401).json({ message: "Invalid id or password"}); // 401 unauthorized status code
+      return res.status(401).json({ message: "Invalid email or password"}); // 401 unauthorized status code
     }
   }
   catch (err) {
